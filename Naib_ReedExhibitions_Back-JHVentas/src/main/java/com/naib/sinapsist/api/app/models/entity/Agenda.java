@@ -1,0 +1,106 @@
+package com.naib.sinapsist.api.app.models.entity;
+
+import java.io.Serializable;
+import java.util.Calendar;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@Table(name = "Agenda")
+public class Agenda implements Serializable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_agenda")
+	private Integer id;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_evento")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@JsonIgnore
+	private Evento evento;
+
+	@Column(name = "nombre")
+	private String nombre;
+
+	@Column(name = "rol")
+	private String rol;
+
+	@Column(name = "numero")
+	private String numero;
+
+	@Column(name = "creacion")
+	private Calendar creacion;
+
+	@PrePersist
+	public void PrePersist() {
+		creacion = Calendar.getInstance();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Evento getEvento() {
+		return evento;
+	}
+
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public Calendar getCreacion() {
+		return creacion;
+	}
+
+	public void setCreacion(Calendar creacion) {
+		this.creacion = creacion;
+	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+}
