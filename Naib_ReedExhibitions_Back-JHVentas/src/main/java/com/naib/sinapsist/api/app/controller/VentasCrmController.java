@@ -1023,6 +1023,7 @@ public class VentasCrmController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 
 	}
+	/** E M A I L ´ S*/
 
 	@GetMapping("/Firmas")
 	public List<FirmaEmail> index() {
@@ -1061,7 +1062,24 @@ public class VentasCrmController {
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
+	@PostMapping("/savefirmaSimg")
+	public ResponseEntity<?> createfirmaImg(@RequestParam String descripcion,@RequestParam String nombre) {
+		Map<String, Object> response = new HashMap<>();
+		FirmaEmail firmaEma = new FirmaEmail();
 
+		try {
+					firmaEma.setNombre(nombre);
+					firmaEma.setDescripcion(descripcion);
+					firmaEma = firmaEmailService.save(firmaEma);
+					response.put("Firma", firmaEma);
+				
+			
+		} catch (DataAccessException e) {
+			response.put("errorH", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
 	@GetMapping("/Firmas/{idE}")
 	public ResponseEntity<?> firmaShow(@PathVariable int idE) {
 
